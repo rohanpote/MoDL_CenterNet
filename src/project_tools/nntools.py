@@ -277,6 +277,58 @@ class Experiment(object):
             if plot is not None:
                 plot(self)
         print("Finish training for {} epochs".format(num_epochs))
+    
+    
+    def run2(self, num_epochs, plot=None):
+        """Runs the experiment, i.e., trains the network using backpropagation
+        based on the optimizer and the training set. Also performs statistics at
+        each epoch using the stats manager.
+
+        Arguments:
+            num_epoch (integer): the number of epoch to perform.
+            plot (func, optional): if not None, should be a function taking a
+                single argument being an experiment (meant to be ``self``).
+                Similar to a visitor pattern, this function is meant to inspect
+                the current state of the experiment and display/plot/save
+                statistics. For example, if the experiment is run from a
+                Jupyter notebook, ``plot`` can be used to display the evolution
+                of the loss with ``matplotlib``. If the experiment is run on a
+                server without display, ``plot`` can be used to show statistics
+                on ``stdout`` or save statistics in a log file. (default: None)
+        """
+        self.net.train()
+        self.stats_manager.init()
+        start_epoch = self.epoch
+        print("Start/Continue training from epoch {}".format(start_epoch))
+        if plot is not None:
+            plot(self)
+        for epoch in range(start_epoch, num_epochs):
+            s = time.time()
+            self.stats_manager.init()
+            for x, d in enumerate(self.train_loader):
+                for k in d:
+                    if k != 'meta':
+                        d[k] = d[k].to(device=self.net.device, non_blocking=True)
+                self.optimizer.zero_grad()
+                y = self.net.forward(d['input'])
+                loss, _ = self.net.criterion(y, d)
+                loss=loss.mean()
+                loss.backward()
+                self.optimizer.step()
+                with torch.no_grad():
+                    self.stats_manager.accumulate(loss.item(), x, y, d)
+            if not self.perform_validation_during_training:
+                self.history.append(self.stats_manager.summarize())
+            else:
+                self.history.append(
+                    (self.stats_manager.summarize(), self.evaluate()))
+            print("Epoch {} (Time: {:.2f}s)".format(
+                self.epoch, time.time() - s))
+            self.save()
+            if plot is not None:
+                plot(self)
+        print("Finish training for {} epochs".format(num_epochs))
+        
 
     def evaluate(self):
         """Evaluates the experiment, i.e., forward propagates the validation set
