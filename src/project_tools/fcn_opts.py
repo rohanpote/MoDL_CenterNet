@@ -7,11 +7,10 @@ def fcn_opts(dataset):
     
     opt.data_dir = sys.path[0]+'/../../data/'
     opt.task = 'ctdet'
-    split = 'train'
     opt.num_workers = 4 # Number of dataloader threads (Default: 4)
     opt.not_cuda_benchmark = True
     opt.seed = 0
-    opt.batch_size = 1
+    opt.batch_size = 32
     opt.lr = 1.25e-4 # default=1.25e-4
     opt.num_classes = dataset.num_classes
     opt.cat_spec_wh = False
