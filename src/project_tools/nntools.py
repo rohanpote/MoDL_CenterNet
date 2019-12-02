@@ -159,7 +159,8 @@ class Experiment(object):
         config_path = os.path.join(output_dir, "config.txt")
 
         # Transfer all local arguments/variables into attributes
-        locs = {k: v for k, v in locals().items() if k is not 'self'}
+        list_loc = ['self','train_set','val_set']
+        locs = {k: v for k, v in locals().items() if k not in list_loc}
         self.__dict__.update(locs)
 
         # Load checkpoint and check compatibility
@@ -181,8 +182,6 @@ class Experiment(object):
     def setting(self):
         """Returns the setting of the experiment."""
         return {'Net': self.net,
-                'TrainSet': self.train_set,
-                'ValSet': self.val_set,
                 'Optimizer': self.optimizer,
                 'StatsManager': self.stats_manager,
                 'BatchSize': self.batch_size,
@@ -321,7 +320,7 @@ class Experiment(object):
                 self.history.append(self.stats_manager.summarize())
             else:
                 self.history.append(
-                    (self.stats_manager.summarize(), self.evaluate()))
+                    (self.stats_manager.summarize(), self.evaluate2()))
             print("Epoch {} (Time: {:.2f}s)".format(
                 self.epoch, time.time() - s))
             self.save()
