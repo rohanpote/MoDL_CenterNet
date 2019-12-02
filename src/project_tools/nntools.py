@@ -345,3 +345,22 @@ class Experiment(object):
                 self.stats_manager.accumulate(loss.item(), x, y, d)
         self.net.train()
         return self.stats_manager.summarize()
+    
+    def evaluate2(self):
+        """Evaluates the experiment, i.e., forward propagates the validation set
+        through the network and returns the statistics computed by the stats
+        manager.
+        """
+        self.stats_manager.init()
+        self.net.eval()
+        with torch.no_grad():
+            for x, d in enumerate(self.train_loader):
+                for k in d:
+                    if k != 'meta':
+                        d[k] = d[k].to(device=self.net.device, non_blocking=True)
+                self.optimizer.zero_grad()
+                y = self.net.forward(d['input'])
+                loss, _ = self.net.criterion(y, d)
+                self.stats_manager.accumulate(loss.item(), x, y, d)
+        self.net.train()
+        return self.stats_manager.summarize()
