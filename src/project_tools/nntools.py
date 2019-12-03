@@ -353,7 +353,7 @@ class Experiment(object):
         self.stats_manager.init()
         self.net.eval()
         with torch.no_grad():
-            for x, d in enumerate(self.train_loader):
+            for x, d in enumerate(self.val_loader):
                 for k in d:
                     if k != 'meta':
                         d[k] = d[k].to(device=self.net.device, non_blocking=True)
