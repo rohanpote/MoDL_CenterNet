@@ -145,7 +145,7 @@ class Experiment(object):
         # Define data loaders
         train_loader = td.DataLoader(train_set, batch_size=batch_size, shuffle=True,
                                      drop_last=True, pin_memory=True)
-        val_loader = td.DataLoader(val_set, batch_size=batch_size, shuffle=False,
+        val_loader = td.DataLoader(val_set, batch_size=1, shuffle=False,
                                    drop_last=True, pin_memory=True)
 
         # Initialize history
@@ -357,7 +357,7 @@ class Experiment(object):
                 for k in d:
                     if k != 'meta':
                         d[k] = d[k].to(device=self.net.device, non_blocking=True)
-                self.optimizer.zero_grad()
+                #self.optimizer.zero_grad()
                 y = self.net.forward(d['input'])
                 loss, _ = self.net.criterion(y, d)
                 self.stats_manager.accumulate(loss.item(), x, y, d)
