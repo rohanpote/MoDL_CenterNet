@@ -8,24 +8,24 @@ def fcn_opts(dataset):
     opt.data_dir = sys.path[0]+'/../../data/'
     opt.task = 'ctdet'
     opt.num_workers = 4 # Number of dataloader threads (Default: 4)
-    opt.not_cuda_benchmark = True
-    opt.seed = 0
-    opt.batch_size = 32
+    opt.not_cuda_benchmark = False
+    opt.seed = 317
+    opt.batch_size = 8
     opt.lr = 1.25e-4 # default=1.25e-4
     opt.num_classes = dataset.num_classes
     opt.cat_spec_wh = False
-    opt.arch = 'res_18' # Default: dla_34
+    opt.arch = 'resdcn_18' # Default: dla_34
     opt.head_conv = 64 # '64 for resnets and 256 for dla.'
-    opt.mse_loss = True
-    opt.dense_wh = True # apply weighted regression near center or just apply 
+    opt.mse_loss = False
+    opt.dense_wh = False # apply weighted regression near center or just apply 
     opt.gpus = [0];
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     opt.device = device
     start_epoch = 0
-    opt.num_epochs = 1
+    opt.num_epochs = 140
     opt.exp_id = 'exp0' # default: 'default'
-    opt.hide_data_time = True
-    opt.print_iter = 1
+    opt.hide_data_time = False
+    opt.print_iter = 0
     opt.debug = 0 # Default 0
     opt.test = False
     opt.keep_res = False
@@ -46,9 +46,9 @@ def fcn_opts(dataset):
     opt.pad = 127 if 'hourglass' in opt.arch else 31
     opt.num_stacks = 2 if opt.arch == 'hourglass' else 1
 
-    opt.trainval = True
+    opt.trainval = False
     if opt.trainval:
-        opt.val_intervals = 100000000
+        opt.val_intervals = 5
 
     opt.master_batch_size = -1
 
@@ -75,7 +75,7 @@ def fcn_opts(dataset):
     opt.save_dir = os.path.join(opt.exp_dir, opt.exp_id)
     opt.debug_dir = os.path.join(opt.save_dir, 'debug')
 
-    opt.resume = True
+    opt.resume = False
     opt.load_model = ''
 
     if opt.resume and opt.load_model == '':
@@ -83,12 +83,12 @@ def fcn_opts(dataset):
                   else opt.save_dir
       opt.load_model = os.path.join(model_path, 'model_last.pth')
 
-    opt.not_rand_crop = True
+    opt.not_rand_crop = False
     opt.shift = 0.1
     opt.scale = 0.4
     opt.rotate = 0
     opt.flip = 0.5
-    opt.no_color_aug = True
+    opt.no_color_aug = False
 
     opt.down_ratio = 4
     opt.hm_gauss = 4 # 4 If resolution is (512,512)
@@ -120,9 +120,50 @@ def fcn_opts(dataset):
     opt.off_weight = 1
     opt.wh_weight = 0.1
 
-    opt.norm_wh = True
+    opt.norm_wh = False
 
-    opt.eval_oracle_hm = True
+    opt.eval_oracle_hm = False
     opt.eval_oracle_wh = False
     opt.eval_oracle_offset = False
+    
+    
+    # Newly defined
+    opt.K=100
+    opt.aggr_weight=0.0
+    opt.agnostic_ex=False,
+    opt.aug_ddd=0.5
+    opt.aug_rot=0
+    opt.center_thresh=0.1
+    opt.dataset='coco'
+    opt.debugger_theme='white'
+    opt.demo=''
+    opt.dense_hp=False
+    opt.dep_weight=1 
+    opt.dim_weight=1 
+    opt.eval_oracle_dep=False 
+    opt.eval_oracle_hmhp=False 
+    opt.eval_oracle_hp_offset=False 
+    opt.eval_oracle_kps=False
+    opt.flip_test=False 
+    opt.gpus_str='0,1,2,3'
+    opt.hm_hp=True 
+    opt.hm_hp_weight=1
+    opt.hp_weight=1
+    opt.kitti_split='3dop' 
+    opt.metric='loss',
+    opt.nms=False
+    opt.not_hm_hp=False
+    opt.not_prefetch_test=False
+    opt.not_reg_bbox=False 
+    opt.not_reg_hp_offset=False
+    opt.num_iters=-1
+    opt.peak_thresh=0.2
+    opt.rect_mask=False
+    opt.reg_bbox=True 
+    opt.reg_hp_offset=True
+    opt.rot_weight=1
+    opt.save_all=False
+    opt.scores_thresh=0.1
+    opt.vis_thresh=0.3
+    
     return opt
