@@ -130,7 +130,7 @@ def fcn_opts(dataset):
     # Newly defined
     opt.K=100
     opt.aggr_weight=0.0
-    opt.agnostic_ex=False,
+    opt.agnostic_ex=False
     opt.aug_ddd=0.5
     opt.aug_rot=0
     opt.center_thresh=0.1
@@ -145,12 +145,12 @@ def fcn_opts(dataset):
     opt.eval_oracle_hp_offset=False 
     opt.eval_oracle_kps=False
     opt.flip_test=False 
-    opt.gpus_str='0,1,2,3'
+    opt.gpus_str='0'
     opt.hm_hp=True 
     opt.hm_hp_weight=1
     opt.hp_weight=1
     opt.kitti_split='3dop' 
-    opt.metric='loss',
+    opt.metric='loss'
     opt.nms=False
     opt.not_hm_hp=False
     opt.not_prefetch_test=False
