@@ -26,4 +26,5 @@ $ (cd src/lib/models/networks/DCNv2 && ./make.sh)
 
 
 ## Reference
-- <img src="https://latex.codecogs.com/gif.latex?\text{[1] X. Zhou, D. Wang, P. Kr${\"a}$henb${\"u}$hl,"Objects as Points",}\textit{in arXiv preprint arXiv:1904.07850}, 2019."/> 
+
+[1] X. Zhou, D. Wang, P. Krahenbuhl,"Objects as Points", in arXiv preprint arXiv:1904.07850, 2019.
