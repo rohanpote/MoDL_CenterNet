@@ -40,4 +40,5 @@ Please refer to CenterNet Readme to download pre-trained models from the origina
 ## Reference
 
 [1] X. Zhou, D. Wang, P. Krahenbuhl,"Objects as Points", in arXiv preprint arXiv:1904.07850, 2019.
+
 [2] T.-Y. Lin, M. Maire, S. Belongie, J. Hays, P. Perona, D. Ramanan, P. Dollar, and C. L. Zitnick. Microsoft ´coco: Common objects in context. In ECCV, 2014.
